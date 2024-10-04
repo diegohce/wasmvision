@@ -4,7 +4,8 @@ import (
 	"context"
 	"path/filepath"
 
-	"github.com/hashicorp/go-getter"
+	//"github.com/hashicorp/go-getter"
+	getter "github.com/diegohce/simple-getter"
 )
 
 type ModelFile struct {
