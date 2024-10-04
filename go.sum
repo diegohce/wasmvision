@@ -1,7 +1,7 @@
 github.com/cpuguy83/go-md2man/v2 v2.0.4 h1:wfIWP927BUkWJb2NmU/kNDYIBTh/ziUX91+lVfRxZq4=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
-github.com/diegohce/simple-getter v0.0.1 h1:vSAu8WaR0A6C/d1uzl7Sa58yvtcT25paYYkjzUApu3w=
-github.com/diegohce/simple-getter v0.0.1/go.mod h1:lqYXY5XUpnrEbvJ6freWOSj7QdOsN+6xH+ogCtAqnk0=
+github.com/diegohce/simple-getter v0.0.2 h1:P4jY5d2kmdjEjuMJ073rRWsGc0UDxlzlL2rxAZr/uMM=
+github.com/diegohce/simple-getter v0.0.2/go.mod h1:i+QA4S6ieBHgZu7+gLqh2bqPuJow04u2jPpYyxQT5T8=
 github.com/hybridgroup/mjpeg v0.0.0-20140228234708-4680f319790e h1:xCcwD5FOXul+j1dn8xD16nbrhJkkum/Cn+jTd/u1LhY=
 github.com/hybridgroup/mjpeg v0.0.0-20140228234708-4680f319790e/go.mod h1:eagM805MRKrioHYuU7iKLUyFPVKqVV6um5DAvCkUtXs=
 github.com/orsinium-labs/tinytest v1.0.0 h1:YiGm/whlGm3mn/ynx9CCFuvEa3Q6yEGrzrKXEqJOkdc=

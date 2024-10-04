@@ -1,6 +1,6 @@
 module github.com/wasmvision/wasmvision
 
-go 1.23.1
+go 1.22.0
 
 require (
 	github.com/orsinium-labs/wypes v0.1.6-0.20240927072953-9d92a194b3f2
@@ -9,7 +9,7 @@ require (
 )
 
 require (
-	github.com/diegohce/simple-getter v0.0.1
+	github.com/diegohce/simple-getter v0.0.2
 	github.com/hybridgroup/mjpeg v0.0.0-20140228234708-4680f319790e
 	github.com/urfave/cli/v2 v2.27.4
 )
