@@ -19,7 +19,7 @@ func TestNewMat(t *testing.T) {
 	}
 
 	configStore := config.NewStore(map[string]string{})
-	ctx := NewContext("", configStore, false)
+	ctx, _ := NewContext("", configStore, false)
 
 	f := matNewFunc(ctx)
 	frm := f(&store)
@@ -37,7 +37,7 @@ func TestNewMatWithSize(t *testing.T) {
 	}
 
 	configStore := config.NewStore(map[string]string{})
-	ctx := NewContext("", configStore, false)
+	ctx, _ := NewContext("", configStore, false)
 
 	f := matNewWithSizeFunc(ctx)
 	frm := f(&store, 640, 480, 16)
@@ -58,7 +58,7 @@ func TestAddFloat(t *testing.T) {
 	}
 
 	configStore := config.NewStore(map[string]string{})
-	ctx := NewContext("", configStore, false)
+	ctx, _ := NewContext("", configStore, false)
 
 	f := matNewWithSizeFunc(ctx)
 	frm := f(&store, 640, 480, 5)
@@ -85,7 +85,7 @@ func TestSubtractFloat(t *testing.T) {
 	}
 
 	configStore := config.NewStore(map[string]string{})
-	ctx := NewContext("", configStore, false)
+	ctx, _ := NewContext("", configStore, false)
 
 	f := matNewWithSizeFunc(ctx)
 	frm := f(&store, 640, 480, 5)
@@ -112,7 +112,7 @@ func TestMultiplyFloat(t *testing.T) {
 	}
 
 	configStore := config.NewStore(map[string]string{})
-	ctx := NewContext("", configStore, false)
+	ctx, _ := NewContext("", configStore, false)
 
 	f := matNewWithSizeFunc(ctx)
 	frm := f(&store, 640, 480, 5)
@@ -142,7 +142,7 @@ func TestDivideFloat(t *testing.T) {
 	}
 
 	configStore := config.NewStore(map[string]string{})
-	ctx := NewContext("", configStore, false)
+	ctx, _ := NewContext("", configStore, false)
 
 	f := matNewWithSizeFunc(ctx)
 	frm := f(&store, 640, 480, 5)

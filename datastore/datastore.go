@@ -2,7 +2,7 @@ package datastore
 
 import "errors"
 
-// Datastore
+// DatastoreBackend
 //
 // id is of type 'any' for its value to be independent from the
 // actual backend's implementation of id.
@@ -12,7 +12,7 @@ import "errors"
 // processors: the id is of type string.
 //
 // frames: the id is of type int.
-type Datastore interface {
+type DatastoreBackend interface {
 	// Get returns a data value from the store.
 	Get(id any, key string) (string, bool, error)
 
@@ -35,20 +35,20 @@ type Datastore interface {
 	Close() error
 }
 
-type newDatastoreFunc func(config any) (Datastore, error)
+type newDatastoreBackendFunc func(config any) (DatastoreBackend, error)
 
 var (
-	datastores           = map[string]newDatastoreFunc{}
+	datastores           = map[string]newDatastoreBackendFunc{}
 	ErrInvalidDatastore  = errors.New("invalid datastore")
 	ErrInvalidConfigType = errors.New("invalid config type")
 	ErrInvalidIDType     = errors.New("invalid id type")
 )
 
-func Register(name string, fn newDatastoreFunc) {
+func Register(name string, fn newDatastoreBackendFunc) {
 	datastores[name] = fn
 }
 
-func New(name string, config any) (Datastore, error) {
+func NewBackend(name string, config any) (DatastoreBackend, error) {
 	newDSFn, exists := datastores[name]
 	if !exists {
 		return nil, ErrInvalidDatastore

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/boltdb/bolt"
 	"github.com/wasmvision/wasmvision/datastore"
@@ -13,7 +14,7 @@ type datastoreBoltDB struct {
 	db *bolt.DB
 }
 
-func newDatastoreBoltDB(args any) (datastore.Datastore, error) {
+func newDatastoreBoltDB(args any) (datastore.DatastoreBackend, error) {
 
 	opts, ok := args.(map[string]any)
 	if !ok {
@@ -41,8 +42,16 @@ func newDatastoreBoltDB(args any) (datastore.Datastore, error) {
 
 // Get returns a data value from the store.
 func (ds *datastoreBoltDB) Get(id any, key string) (string, bool, error) {
-	realID, ok := id.(string)
-	if !ok {
+	var realID string
+
+	switch v := id.(type) {
+	case int:
+		realID = strconv.Itoa(v)
+
+	case string:
+		realID = v
+
+	default:
 		return "", false, datastore.ErrInvalidIDType
 	}
 
@@ -62,8 +71,16 @@ func (ds *datastoreBoltDB) Get(id any, key string) (string, bool, error) {
 
 // GetKeys returns all the keys for a specific id from the store.
 func (ds *datastoreBoltDB) GetKeys(id any) ([]string, bool, error) {
-	realID, ok := id.(string)
-	if !ok {
+	var realID string
+
+	switch v := id.(type) {
+	case int:
+		realID = strconv.Itoa(v)
+
+	case string:
+		realID = v
+
+	default:
 		return nil, false, datastore.ErrInvalidIDType
 	}
 
@@ -85,8 +102,16 @@ func (ds *datastoreBoltDB) GetKeys(id any) ([]string, bool, error) {
 
 // Set sets a config value in the store.
 func (ds *datastoreBoltDB) Set(id any, key string, val string) error {
-	realID, ok := id.(string)
-	if !ok {
+	var realID string
+
+	switch v := id.(type) {
+	case int:
+		realID = strconv.Itoa(v)
+
+	case string:
+		realID = v
+
+	default:
 		return datastore.ErrInvalidIDType
 	}
 
@@ -103,8 +128,16 @@ func (ds *datastoreBoltDB) Set(id any, key string, val string) error {
 
 // Delete deletes data from the store.
 func (ds *datastoreBoltDB) Delete(id any, key string) error {
-	realID, ok := id.(string)
-	if !ok {
+	var realID string
+
+	switch v := id.(type) {
+	case int:
+		realID = strconv.Itoa(v)
+
+	case string:
+		realID = v
+
+	default:
 		return datastore.ErrInvalidIDType
 	}
 
@@ -121,8 +154,16 @@ func (ds *datastoreBoltDB) Delete(id any, key string) error {
 
 // DeleteAll deletes all data for a specific id from the store.
 func (ds *datastoreBoltDB) DeleteAll(id any) error {
-	realID, ok := id.(string)
-	if !ok {
+	var realID string
+
+	switch v := id.(type) {
+	case int:
+		realID = strconv.Itoa(v)
+
+	case string:
+		realID = v
+
+	default:
 		return datastore.ErrInvalidIDType
 	}
 
@@ -135,8 +176,16 @@ func (ds *datastoreBoltDB) DeleteAll(id any) error {
 
 // Exists returns true if there is any data for a specific id in the store.
 func (ds *datastoreBoltDB) Exists(id any) (bool, error) {
-	realID, ok := id.(string)
-	if !ok {
+	var realID string
+
+	switch v := id.(type) {
+	case int:
+		realID = strconv.Itoa(v)
+
+	case string:
+		realID = v
+
+	default:
 		return false, datastore.ErrInvalidIDType
 	}
 

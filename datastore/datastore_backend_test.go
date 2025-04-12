@@ -6,8 +6,7 @@ import (
 
 	"github.com/wasmvision/wasmvision/datastore"
 	_ "github.com/wasmvision/wasmvision/datastore/boltdb"
-	_ "github.com/wasmvision/wasmvision/datastore/frames"
-	_ "github.com/wasmvision/wasmvision/datastore/processors"
+	_ "github.com/wasmvision/wasmvision/datastore/memory"
 )
 
 func TestDatastoreDrivers(t *testing.T) {
@@ -19,13 +18,12 @@ func TestDatastoreDrivers(t *testing.T) {
 		key    string
 		value  string
 	}{
-		{driver: "frames", bucket: 1, key: "frames_test_key", value: "frames_test_value", config: nil},
-		{driver: "processors", bucket: "test_processor", key: "processor_test_key", value: "processor_test_value", config: nil},
+		{driver: "memory", bucket: "test_memory", key: "memory_test_key", value: "memory_test_value", config: nil},
 		{driver: "boltdb", bucket: "test_boltdb", key: "boltdb_test_key", value: "boltdb_test_value", config: map[string]any{"filename": "test.db", "filemode": os.FileMode(0644)}},
 	}
 
 	for _, c := range cases {
-		ds, err := datastore.New(c.driver, c.config)
+		ds, err := datastore.NewBackend(c.driver, c.config)
 		if err != nil {
 			t.Error(err)
 		}

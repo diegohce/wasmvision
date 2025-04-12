@@ -25,10 +25,13 @@ func hostFramedataDropFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32) wyp
 // hostFramedataDeleteFunc deletes a key from the frame store for a given frame.
 func hostFramedataDeleteFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, wypes.UInt32, wypes.String, wypes.Result[wypes.UInt32, wypes.UInt32, wypes.UInt32]) wypes.Void {
 	return func(s *wypes.Store, fs wypes.UInt32, frame wypes.UInt32, key wypes.String, result wypes.Result[wypes.UInt32, wypes.UInt32, wypes.UInt32]) wypes.Void {
-		ctx.FrameStore.Delete(int(frame.Unwrap()), key.Unwrap())
+		err := ctx.FrameStore.Delete(int(frame.Unwrap()), key.Unwrap())
+		if err != nil {
+			result.IsError = true
+			result.Error = wypes.UInt32(1)
+		}
 
 		result.IsError = false
-		result.OK = 0
 
 		result.DataPtr = ctx.ReturnDataPtr
 		result.Lower(s)
@@ -43,7 +46,12 @@ func hostFramedataDeleteFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, w
 // hostFramedataExistsFunc checks if there is any data in the frame store for a given frame.
 func hostFramedataExistsFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, wypes.UInt32, wypes.Result[wypes.Bool, wypes.Bool, wypes.UInt32]) wypes.Void {
 	return func(s *wypes.Store, fs wypes.UInt32, frame wypes.UInt32, result wypes.Result[wypes.Bool, wypes.Bool, wypes.UInt32]) wypes.Void {
-		ok := ctx.FrameStore.Exists(int(frame.Unwrap()))
+		ok, err := ctx.FrameStore.Exists(int(frame.Unwrap()))
+		if err != nil {
+			result.IsError = true
+			result.Error = wypes.UInt32(1)
+		}
+
 		result.IsError = false
 		result.OK = wypes.Bool(ok)
 
@@ -54,7 +62,11 @@ func hostFramedataExistsFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, w
 // hostFramedataGetFunc gets the data for a key from the frame store for a given frame.
 func hostFramedataGetFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, wypes.UInt32, wypes.String, wypes.Result[wypes.Bytes, wypes.Bytes, wypes.UInt32]) wypes.Void {
 	return func(s *wypes.Store, fs wypes.UInt32, frame wypes.UInt32, key wypes.String, result wypes.Result[wypes.Bytes, wypes.Bytes, wypes.UInt32]) wypes.Void {
-		val, ok := ctx.FrameStore.Get(int(frame.Unwrap()), key.Unwrap())
+		val, ok, err := ctx.FrameStore.Get(int(frame.Unwrap()), key.Unwrap())
+		if err != nil {
+			result.IsError = true
+			result.Error = wypes.UInt32(1)
+		}
 
 		if !ok {
 			result.IsError = true
@@ -77,7 +89,7 @@ func hostFramedataGetFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, wype
 // hostFramedataGetKeysFunc gets all the keys for a given frame from the frame store.
 func hostFramedataGetKeysFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, wypes.UInt32, wypes.ReturnedList[wypes.String]) wypes.Void {
 	return func(s *wypes.Store, fs wypes.UInt32, frame wypes.UInt32, result wypes.ReturnedList[wypes.String]) wypes.Void {
-		keys, ok := ctx.FrameStore.GetKeys(int(frame.Unwrap()))
+		keys, ok, _ := ctx.FrameStore.GetKeys(int(frame.Unwrap()))
 
 		if !ok {
 			// no data for this frame
@@ -142,7 +154,11 @@ func hostProcessorDataDropFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32)
 // hostProcessorDataDeleteFunc deletes a key from the processor store for a given processor.
 func hostProcessorDataDeleteFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, wypes.String, wypes.String, wypes.Result[wypes.UInt32, wypes.UInt32, wypes.UInt32]) wypes.Void {
 	return func(s *wypes.Store, fs wypes.UInt32, processor wypes.String, key wypes.String, result wypes.Result[wypes.UInt32, wypes.UInt32, wypes.UInt32]) wypes.Void {
-		ctx.ProcessorStore.Delete(processor.Unwrap(), key.Unwrap())
+		err := ctx.ProcessorStore.Delete(processor.Unwrap(), key.Unwrap())
+		if err != nil {
+			result.IsError = true
+			result.Error = wypes.UInt32(1)
+		}
 
 		result.IsError = false
 		result.OK = 0
@@ -160,7 +176,12 @@ func hostProcessorDataDeleteFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt3
 // hostProcessorDataExistsFunc checks if there is any data in the processor store for a given processor.
 func hostProcessorDataExistsFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, wypes.String, wypes.Result[wypes.Bool, wypes.Bool, wypes.UInt32]) wypes.Void {
 	return func(s *wypes.Store, fs wypes.UInt32, processor wypes.String, result wypes.Result[wypes.Bool, wypes.Bool, wypes.UInt32]) wypes.Void {
-		ok := ctx.ProcessorStore.Exists(processor.Unwrap())
+		ok, err := ctx.ProcessorStore.Exists(processor.Unwrap())
+		if err != nil {
+			result.IsError = true
+			result.Error = wypes.UInt32(1)
+		}
+
 		result.IsError = false
 		result.OK = wypes.Bool(ok)
 
@@ -171,7 +192,11 @@ func hostProcessorDataExistsFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt3
 // hostProcessorDataGetFunc gets the data for a key from the processor store for a given processor.
 func hostProcessorDataGetFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, wypes.String, wypes.String, wypes.Result[wypes.Bytes, wypes.Bytes, wypes.UInt32]) wypes.Void {
 	return func(s *wypes.Store, fs wypes.UInt32, processor wypes.String, key wypes.String, result wypes.Result[wypes.Bytes, wypes.Bytes, wypes.UInt32]) wypes.Void {
-		val, ok := ctx.ProcessorStore.Get(processor.Unwrap(), key.Unwrap())
+		val, ok, err := ctx.ProcessorStore.Get(processor.Unwrap(), key.Unwrap())
+		if err != nil {
+			result.IsError = true
+			result.Error = wypes.UInt32(1)
+		}
 
 		if !ok {
 			result.IsError = true
@@ -198,7 +223,7 @@ func hostProcessorDataGetFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, 
 // hostProcessorDataGetKeysFunc gets all the keys for a given processor from the processor store.
 func hostProcessorDataGetKeysFunc(ctx *cv.Context) func(*wypes.Store, wypes.UInt32, wypes.String, wypes.ReturnedList[wypes.String]) wypes.Void {
 	return func(s *wypes.Store, fs wypes.UInt32, processor wypes.String, result wypes.ReturnedList[wypes.String]) wypes.Void {
-		keys, ok := ctx.ProcessorStore.GetKeys(processor.Unwrap())
+		keys, ok, _ := ctx.ProcessorStore.GetKeys(processor.Unwrap())
 
 		if !ok {
 			// no data for this processor

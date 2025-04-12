@@ -7,13 +7,11 @@ import (
 
 func TestFrames(t *testing.T) {
 	t.Run("get", func(t *testing.T) {
-		s := NewFrames(map[int]map[string]string{
-			145599: map[string]string{
-				"key": "value",
-			},
-		})
+		s, _ := NewFrames("memory", nil)
 
-		val, ok := s.Get(145599, "key")
+		s.Set(145599, "key", "value")
+
+		val, ok, _ := s.Get(145599, "key")
 		if !ok {
 			t.Errorf("key not found")
 		}
@@ -24,15 +22,14 @@ func TestFrames(t *testing.T) {
 	})
 
 	t.Run("getKeys", func(t *testing.T) {
-		s := NewFrames(map[int]map[string]string{
-			145599: map[string]string{
-				"key":  "value",
-				"key2": "value2",
-				"key3": "value3",
-			},
-		})
 
-		keys, ok := s.GetKeys(145599)
+		s, _ := NewFrames("memory", nil)
+
+		s.Set(145599, "key", "value")
+		s.Set(145599, "key2", "value2")
+		s.Set(145599, "key3", "value3")
+
+		keys, ok, _ := s.GetKeys(145599)
 		if !ok {
 			t.Errorf("frame not found")
 		}
@@ -47,29 +44,27 @@ func TestFrames(t *testing.T) {
 	})
 
 	t.Run("getKeys non exiting frame", func(t *testing.T) {
-		s := NewFrames(map[int]map[string]string{
-			145599: map[string]string{
-				"key":  "value",
-				"key2": "value2",
-				"key3": "value3",
-			},
-		})
+		s, _ := NewFrames("memory", nil)
 
-		_, ok := s.GetKeys(99)
+		s.Set(145599, "key", "value")
+		s.Set(145599, "key2", "value2")
+		s.Set(145599, "key3", "value3")
+
+		_, ok, _ := s.GetKeys(99)
 		if ok {
 			t.Errorf("frame should not be found")
 		}
 	})
 
 	t.Run("set", func(t *testing.T) {
-		s := NewFrames(map[int]map[string]string{})
+		s, _ := NewFrames("memory", nil)
 
 		err := s.Set(145599, "key", "value")
 		if err != nil {
 			t.Errorf("unexpected error: %v", err)
 		}
 
-		val, ok := s.Get(145599, "key")
+		val, ok, _ := s.Get(145599, "key")
 		if !ok {
 			t.Errorf("key not found")
 		}
@@ -80,7 +75,7 @@ func TestFrames(t *testing.T) {
 	})
 
 	t.Run("set multiple keys", func(t *testing.T) {
-		s := NewFrames(map[int]map[string]string{})
+		s, _ := NewFrames("memory", nil)
 
 		err := s.Set(145555, "key-1", "value")
 		if err != nil {
@@ -97,7 +92,7 @@ func TestFrames(t *testing.T) {
 			t.Errorf("unexpected error: %v", err)
 		}
 
-		val, ok := s.Get(145555, "key-1")
+		val, ok, _ := s.Get(145555, "key-1")
 		if !ok {
 			t.Errorf("key not found")
 		}
@@ -106,7 +101,7 @@ func TestFrames(t *testing.T) {
 			t.Errorf("unexpected value: %s", val)
 		}
 
-		keys, ok := s.GetKeys(145555)
+		keys, ok, _ := s.GetKeys(145555)
 		if !ok {
 			t.Errorf("frame not found")
 		}
@@ -122,7 +117,7 @@ func TestFrames(t *testing.T) {
 	})
 
 	t.Run("set multiple keys/frames", func(t *testing.T) {
-		s := NewFrames(map[int]map[string]string{})
+		s, _ := NewFrames("memory", nil)
 
 		err := s.Set(1, "key-1", "value")
 		if err != nil {
@@ -139,7 +134,7 @@ func TestFrames(t *testing.T) {
 			t.Errorf("unexpected error: %v", err)
 		}
 
-		val, ok := s.Get(1, "key-1")
+		val, ok, _ := s.Get(1, "key-1")
 		if !ok {
 			t.Errorf("key not found")
 		}
@@ -150,46 +145,42 @@ func TestFrames(t *testing.T) {
 	})
 
 	t.Run("delete", func(t *testing.T) {
-		s := NewFrames(map[int]map[string]string{
-			1: map[string]string{
-				"key": "value",
-			},
-		})
+		s, _ := NewFrames("memory", nil)
+
+		s.Set(145599, "key", "value")
 
 		s.Delete(1, "key")
 
-		_, ok := s.Get(1, "key")
+		_, ok, _ := s.Get(1, "key")
 		if ok {
 			t.Errorf("key not deleted")
 		}
 	})
 
 	t.Run("delete all", func(t *testing.T) {
-		s := NewFrames(map[int]map[string]string{
-			12345: map[string]string{
-				"key":  "value",
-				"key2": "value2",
-				"key3": "value3",
-			},
-		})
+		s, _ := NewFrames("memory", nil)
+
+		s.Set(145599, "key", "value")
+		s.Set(145599, "key2", "value2")
+		s.Set(145599, "key3", "value3")
 
 		s.DeleteAll(12345)
 
-		_, ok := s.Get(12345, "key")
+		_, ok, _ := s.Get(12345, "key")
 		if ok {
 			t.Errorf("key not deleted")
 		}
 	})
 
 	t.Run("exists", func(t *testing.T) {
-		s := NewFrames(map[int]map[string]string{})
+		s, _ := NewFrames("memory", nil)
 
 		err := s.Set(145599, "key", "value")
 		if err != nil {
 			t.Errorf("unexpected error: %v", err)
 		}
 
-		ok := s.Exists(145599)
+		ok, _ := s.Exists(145599)
 		if !ok {
 			t.Errorf("key not found")
 		}

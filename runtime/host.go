@@ -41,7 +41,11 @@ func New(ctx context.Context, conf InterpreterConfig) (Interpreter, error) {
 
 	configStore := config.NewStore(conf.Settings)
 
-	cctx := cv.NewContext(conf.ModelsDir, configStore, conf.EnableCUDA)
+	cctx, err := cv.NewContext(conf.ModelsDir, configStore, conf.EnableCUDA)
+	if err != nil {
+		return Interpreter{}, err
+	}
+
 	modules := hostModules(cctx)
 	refs := NewMapRefs()
 	if err := modules.DefineWazero(r, refs); err != nil {
